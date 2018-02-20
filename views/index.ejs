@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    
+        .branches span,
+        .tags span{
+            background:black;
+            padding:10px;
+            margin:5px;
+            color:whitesmoke;
+        }
+
+        .branches span.current,
+        .tags span.current{
+            background: green
+        }
+    
+    </style>
+</head>
+
+<body>
+
+    <div class="branches">
+            <h2>Branches</h2>
+    </div>
+    <div class="tags">
+        <h2>TAGs</h2>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        // Make a request for a user with a given ID
+        axios.get('/tags').then(function (response) {
+            let tags = response.data;
+            let tagsDom = document.querySelector('.tags');
+
+            for (let elem of tags) {
+
+                tagsDom.innerHTML += `<span>${elem}</span>`;
+            }
+        });
+
+        axios.get('/branch').then(function (response) {
+            let current = response.data.current;
+            let branches = response.data.branches;
+            let branchesDom = document.querySelector('.branches');
+            
+            for (let index in branches) {
+                let elem = branches[index];
+                
+                branchesDom.innerHTML += `
+                    <span class="${(elem.current) ? 'current':''}">${elem.name}</span>
+                `;
+            }
+        });
+
+    </script>
+</body>
+
+</html>
