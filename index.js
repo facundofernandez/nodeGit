@@ -3,27 +3,31 @@ var express = require('express');
 var app = express();
 var port = 5555;
 
-const git = require('simple-git')("../pruebasGit/");
+let git = null;
 
 app.set('views', './views')
 app.set('view engine', 'ejs')
 
 app.use(express.static('./public'));
 
-app.get('/', function (req, res) {
+app.get('/:proyecto', function (req, res) {
+    
+    git = require('simple-git')("../"+req.params.proyecto+"/");
     res.render('index');
 });
 
-app.get('/checkout/:version', function (req, res) {
+app.get('/api/checkout/:version', function (req, res) {
     git.checkout("master",()=>{
-        git.checkout(req.params.version);
+        git.checkout(req.params.version,()=>{
+            res.json("ok");
+        });
     });
 
-    res.json("ok")
+    
     
 });
 
-app.get('/tags', function (req, res) {
+app.get('/api/tags', function (req, res) {
 
 
     git.tags((err, tags) => console.log(tags.all));
@@ -39,7 +43,7 @@ app.get('/tags', function (req, res) {
     
 });
 
-app.get('/branch', function (req, res) {
+app.get('/api/branch', function (req, res) {
 
 
     git.tags((err, tags) => console.log(tags.all));

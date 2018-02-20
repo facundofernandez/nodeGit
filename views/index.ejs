@@ -7,12 +7,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+
+        body{
+            background: black;
+            color: white;
+            position: relative;
+        }
+
+        .branches,
+        .tags {
+            display: inline-block;
+            width: 50%;
+            margin:0 auto;
+        }
+
         .branches span,
         .tags span {
-            background: black;
+            background: gray;
             padding: 10px;
             margin: 5px;
             color: whitesmoke;
+        }
+
+        .branches span:hover,
+        .tags span:hover {
+            cursor: pointer
         }
 
         .branches span.current,
@@ -24,9 +43,14 @@
 
 <body>
 
+    <h1>Proyecto: PruebasGit</h1>
+
+    <h1>Manejador de versiones</h1>
+    <h1>Branches</h1>
     <div class="branches">
         <h2>Branches</h2>
     </div>
+    <h1>Tags</h1>
     <div class="tags">
         <h2>TAGs</h2>
     </div>
@@ -34,38 +58,54 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
 
-        // Make a request for a user with a given ID
-        axios.get('/tags').then(function (response) {
-            let tags = response.data;
-            let tagsDom = document.querySelector('.tags');
+        function cargarTags() {
+            // Make a request for a user with a given ID
+            axios.get('api/tags').then(function (response) {
+                let tags = response.data;
+                let tagsDom = document.querySelector('.tags');
 
-            for (let elem of tags) {
+                tagsDom.innerHTML = "";
 
-                tagsDom.innerHTML += `<span>${elem}</span>`;
-            }
-        });
+                for (let elem of tags) {
+
+                    let span = document.createElement('span');
+                    span.addEventListener("click", () => {
+                        axios.get('api/checkout/' + elem).then(function (response) {
+                            console.log("checkout", response.data);
+                            cargarBranch();
+                        });
+                    });
+
+                    span.innerHTML = `<span>${elem}</span>`;
+
+                    tagsDom.appendChild(span);
+
+                }
+            });
+
+        }
 
         function cargarBranch() {
 
-            axios.get('/branch').then(function (response) {
+            axios.get('api/branch').then(function (response) {
                 let current = response.data.current;
                 let branches = response.data.branches;
                 let branchesDom = document.querySelector('.branches');
-                branchesDom.innerHTML ="";
+                branchesDom.innerHTML = "";
                 console.log(branches)
                 for (let index in branches) {
                     let elem = branches[index];
 
                     let span = document.createElement('span');
                     span.addEventListener("click", () => {
-                        axios.get('/checkout/' + elem.name).then(function (response) {
+                        axios.get('api/checkout/' + elem.name).then(function (response) {
                             console.log("checkout", response.data);
                             cargarBranch();
                         });
                     });
 
                     span.innerHTML = `<span class="${(elem.current) ? 'current' : ''}">${elem.name}</span>`;
-                    
+
                     branchesDom.appendChild(span);
 
                 }
@@ -73,7 +113,7 @@
         }
 
         cargarBranch();
-
+        cargarTags();
 
     </script>
 </body>
