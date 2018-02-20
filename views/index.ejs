@@ -7,27 +7,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-    
         .branches span,
-        .tags span{
-            background:black;
-            padding:10px;
-            margin:5px;
-            color:whitesmoke;
+        .tags span {
+            background: black;
+            padding: 10px;
+            margin: 5px;
+            color: whitesmoke;
         }
 
         .branches span.current,
-        .tags span.current{
+        .tags span.current {
             background: green
         }
-    
     </style>
 </head>
 
 <body>
 
     <div class="branches">
-            <h2>Branches</h2>
+        <h2>Branches</h2>
     </div>
     <div class="tags">
         <h2>TAGs</h2>
@@ -47,19 +45,35 @@
             }
         });
 
-        axios.get('/branch').then(function (response) {
-            let current = response.data.current;
-            let branches = response.data.branches;
-            let branchesDom = document.querySelector('.branches');
-            
-            for (let index in branches) {
-                let elem = branches[index];
-                
-                branchesDom.innerHTML += `
-                    <span class="${(elem.current) ? 'current':''}">${elem.name}</span>
-                `;
-            }
-        });
+        function cargarBranch() {
+
+            axios.get('/branch').then(function (response) {
+                let current = response.data.current;
+                let branches = response.data.branches;
+                let branchesDom = document.querySelector('.branches');
+                branchesDom.innerHTML ="";
+                console.log(branches)
+                for (let index in branches) {
+                    let elem = branches[index];
+
+                    let span = document.createElement('span');
+                    span.addEventListener("click", () => {
+                        axios.get('/checkout/' + elem.name).then(function (response) {
+                            console.log("checkout", response.data);
+                            cargarBranch();
+                        });
+                    });
+
+                    span.innerHTML = `<span class="${(elem.current) ? 'current' : ''}">${elem.name}</span>`;
+                    
+                    branchesDom.appendChild(span);
+
+                }
+            });
+        }
+
+        cargarBranch();
+
 
     </script>
 </body>

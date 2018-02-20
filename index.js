@@ -3,6 +3,8 @@ var express = require('express');
 var app = express();
 var port = 5555;
 
+const git = require('simple-git')("../pruebasGit/");
+
 app.set('views', './views')
 app.set('view engine', 'ejs')
 
@@ -12,9 +14,17 @@ app.get('/', function (req, res) {
     res.render('index');
 });
 
+app.get('/checkout/:version', function (req, res) {
+    git.checkout("master",()=>{
+        git.checkout(req.params.version);
+    });
+
+    res.json("ok")
+    
+});
+
 app.get('/tags', function (req, res) {
 
-    const git = require('simple-git')("./");
 
     git.tags((err, tags) => console.log(tags.all));
     //git.tags((err, tags) => console.log("Latest available tag: %s", tags.latest));
@@ -31,7 +41,6 @@ app.get('/tags', function (req, res) {
 
 app.get('/branch', function (req, res) {
 
-    const git = require('simple-git')("./");
 
     git.tags((err, tags) => console.log(tags.all));
     //git.tags((err, tags) => console.log("Latest available tag: %s", tags.latest));
