@@ -3,26 +3,15 @@ body {
   color: white;
   position: relative; }
 
-.branches,
-.tags {
-  display: inline-block;
-  width: 50%;
-  margin: 0 auto; }
-
-.branches span,
-.tags span {
+.branches span, .tags span {
   background: gray;
   padding: 10px;
   margin: 5px;
   color: whitesmoke; }
-
-.branches span:hover,
-.tags span:hover {
-  cursor: pointer; }
-
-.branches span.current,
-.tags span.current {
-  background: green; }
+  .branches span:hover, .tags span:hover {
+    cursor: pointer; }
+  .branches span.current, .tags span.current {
+    background: green; }
 
 .remote {
   position: absolute;
