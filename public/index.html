@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <h1>Proyecto: PruebasGit</h1>
+    <button class="btn-pull" onClick="fetch()">Actualizar Repositorio Local</button>
+
+    <h1>Manejador de versiones</h1>
+    <div class="contenedor">
+        <div class="local">
+            <h1>Branches</h1>
+            <div class="branches"></div>
+            <h1>Tags</h1>
+            <div class="tags"></div>
+        </div>
+        <div class="remote">
+            <h2>Tags Remote</h2>
+            <div class="tags"></div>
+            <h2>Heads Remote</h2>
+            <div class="heads"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

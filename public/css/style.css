@@ -1,0 +1,32 @@
+body {
+  background: black;
+  color: white;
+  position: relative; }
+
+.branches,
+.tags {
+  display: inline-block;
+  width: 50%;
+  margin: 0 auto; }
+
+.branches span,
+.tags span {
+  background: gray;
+  padding: 10px;
+  margin: 5px;
+  color: whitesmoke; }
+
+.branches span:hover,
+.tags span:hover {
+  cursor: pointer; }
+
+.branches span.current,
+.tags span.current {
+  background: green; }
+
+.remote {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: gray;
+  padding: 10px; }
